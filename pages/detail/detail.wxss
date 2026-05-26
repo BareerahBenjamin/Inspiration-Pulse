@@ -1,0 +1,350 @@
+.detail-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 500rpx 400rpx at 50% 0%, rgba(155, 186, 130, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 300rpx 300rpx at 80% 90%, rgba(196, 172, 110, 0.02) 0%, transparent 50%),
+    linear-gradient(175deg, #1A2618 0%, #1D2B1A 40%, #203020 75%, #1A2618 100%);
+  background-attachment: fixed;
+  padding-bottom: 180rpx;
+}
+
+/* ── 灵感内容区 ── */
+.idea-section {
+  padding: 48rpx 32rpx 32rpx;
+}
+
+.idea-tag-row {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.tag {
+  font-size: 22rpx;
+  font-weight: 500;
+  padding: 8rpx 18rpx;
+  border-radius: 40rpx;
+}
+
+.tag.amber {
+  color: #9BBA82;
+  background: rgba(155, 186, 130, 0.07);
+  border: 1rpx solid rgba(155, 186, 130, 0.12);
+}
+
+.tag.green {
+  color: #C4AC6E;
+  background: rgba(196, 172, 110, 0.06);
+  border: 1rpx solid rgba(196, 172, 110, 0.1);
+}
+
+.idea-textarea {
+  width: 100%;
+  font-size: 38rpx;
+  color: #E2E4D4;
+  line-height: 1.75;
+  min-height: 130rpx;
+  font-weight: 400;
+  letter-spacing: 0.5rpx;
+}
+
+.idea-time {
+  font-size: 22rpx;
+  color: #4A6838;
+  font-weight: 400;
+  display: block;
+  margin-top: 18rpx;
+  letter-spacing: 1rpx;
+}
+
+/* ── 截止日期 ── */
+.deadline-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  margin-top: 24rpx;
+  padding: 18rpx 22rpx;
+  background: rgba(32, 48, 32, 0.45);
+  border-radius: 14rpx;
+  border: 1rpx solid rgba(155, 186, 130, 0.05);
+  transition: all 0.2s ease;
+}
+
+.deadline-row:active {
+  background: rgba(32, 48, 32, 0.65);
+}
+
+.deadline-icon {
+  font-size: 26rpx;
+}
+
+.deadline-label {
+  font-size: 28rpx;
+  color: #C4AC6E;
+  font-weight: 500;
+  letter-spacing: 1rpx;
+}
+
+.deadline-placeholder {
+  font-size: 28rpx;
+  color: #4A6838;
+  font-weight: 400;
+}
+
+.deadline-clear {
+  margin-left: auto;
+  font-size: 22rpx;
+  color: #4A6838;
+  padding: 6rpx 14rpx;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+}
+
+.deadline-clear:active {
+  color: #C87A5A;
+}
+
+/* ── 步骤区 ── */
+.steps-section {
+  padding: 40rpx 32rpx;
+}
+
+.steps-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.steps-title {
+  font-size: 34rpx;
+  font-weight: 500;
+  color: #E2E4D4;
+  letter-spacing: 3rpx;
+}
+
+.gran-row {
+  display: flex;
+  gap: 8rpx;
+}
+
+.gran-btn {
+  font-size: 22rpx;
+  font-weight: 500;
+  padding: 10rpx 20rpx;
+  border-radius: 40rpx;
+  border: 1rpx solid rgba(155, 186, 130, 0.05);
+  color: #4A6838;
+  background: rgba(32, 48, 32, 0.35);
+  letter-spacing: 1rpx;
+  transition: all 0.2s ease;
+}
+
+.gran-btn:active {
+  transform: scale(0.95);
+}
+
+.gran-btn.active {
+  background: rgba(155, 186, 130, 0.1);
+  color: #9BBA82;
+  border-color: rgba(155, 186, 130, 0.16);
+}
+
+/* 步骤列表 */
+.steps-list {
+  margin-bottom: 26rpx;
+}
+
+.step-item {
+  display: flex;
+  gap: 18rpx;
+  align-items: flex-start;
+  padding: 20rpx 0;
+}
+
+.step-item.done .step-text {
+  text-decoration: line-through;
+  color: #4A6838;
+}
+
+.step-line-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.step-dot {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 50%;
+  border: 2rpx solid rgba(155, 186, 130, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #4A6838;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+
+.step-connector {
+  width: 2rpx;
+  flex: 1;
+  min-height: 20rpx;
+  background: rgba(155, 186, 130, 0.06);
+  margin: 4rpx 0;
+}
+
+.step-dot.done {
+  background: #9BBA82;
+  border-color: #9BBA82;
+  color: #1A2618;
+}
+
+.step-text {
+  font-size: 30rpx;
+  color: #E2E4D4;
+  line-height: 1.65;
+  flex: 1;
+  padding-top: 2rpx;
+  font-weight: 400;
+}
+
+/* 加载 */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 56rpx 0;
+  gap: 20rpx;
+}
+
+.loading-dots {
+  display: flex;
+  gap: 12rpx;
+}
+
+.dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: #9BBA82;
+  opacity: 0.4;
+  animation: breathe 1.8s ease-in-out infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(0.8); opacity: 0.25; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+}
+
+.loading-text {
+  font-size: 24rpx;
+  font-weight: 400;
+  color: #4A6838;
+  letter-spacing: 3rpx;
+}
+
+.no-steps {
+  padding: 48rpx 0;
+  text-align: center;
+}
+
+.no-steps-text {
+  font-size: 28rpx;
+  font-weight: 400;
+  color: #5A7A48;
+  line-height: 1.8;
+  letter-spacing: 1rpx;
+}
+
+.breakdown-btn {
+  margin-top: 24rpx;
+  padding: 30rpx;
+  background: #9BBA82;
+  color: #1A2618;
+  border-radius: 16rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 4rpx;
+  box-shadow: 0 6rpx 24rpx rgba(155, 186, 130, 0.16);
+  transition: all 0.25s ease;
+}
+
+.breakdown-btn:active:not(.disabled) {
+  transform: scale(0.97);
+  background: #8AAA72;
+}
+
+.breakdown-btn.disabled {
+  opacity: 0.25;
+  box-shadow: none;
+}
+
+/* ── 底部操作栏 ── */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 14rpx;
+  padding: 20rpx 28rpx;
+  padding-bottom: calc(20rpx + env(safe-area-inset-bottom));
+  background: rgba(26, 38, 24, 0.95);
+  backdrop-filter: blur(24rpx);
+  border-top: 1rpx solid rgba(155, 186, 130, 0.06);
+}
+
+.save-btn {
+  flex: 1;
+  padding: 28rpx;
+  border: 1rpx solid rgba(155, 186, 130, 0.12);
+  border-radius: 14rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #7A9A68;
+  background: rgba(155, 186, 130, 0.04);
+  letter-spacing: 2rpx;
+  transition: all 0.2s ease;
+}
+
+.save-btn:active {
+  background: rgba(155, 186, 130, 0.08);
+}
+
+.convert-btn {
+  flex: 2;
+  padding: 28rpx;
+  background: #9BBA82;
+  color: #1A2618;
+  border-radius: 14rpx;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+  box-shadow: 0 6rpx 20rpx rgba(155, 186, 130, 0.16);
+  transition: all 0.2s ease;
+}
+
+.convert-btn:active:not(.done) {
+  background: #8AAA72;
+}
+
+.convert-btn.done {
+  background: rgba(32, 48, 32, 0.5);
+  color: #4A6838;
+  box-shadow: none;
+}

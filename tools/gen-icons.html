@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><title>生成 tabBar 图标</title>
+<style>
+body{background:#1A2B22;display:flex;flex-direction:column;align-items:center;padding:40px;font-family:sans-serif}
+h2{color:#8BB381;margin-bottom:24px}
+.row{display:flex;gap:24px;margin:16px 0;flex-wrap:wrap;justify-content:center}
+.box{text-align:center;color:#9AAF8E;font-size:14px}
+.box canvas{border-radius:12px;border:1px solid rgba(139,179,129,0.15);margin-bottom:8px;display:block}
+button{margin-top:28px;padding:14px 36px;background:#5A8A4E;color:#fff;border:none;border-radius:10px;font-size:18px;cursor:pointer}
+button:hover{background:#6B9B5E}
+p.tip{color:#6A8060;font-size:13px;margin-top:12px}
+</style></head>
+<body>
+<h2>tabBar 图标预览（81x81）</h2>
+<div class="row">
+  <div class="box"><canvas id="c0" width="81" height="81"></canvas>今日流 未选中</div>
+  <div class="box"><canvas id="c1" width="81" height="81"></canvas>今日流 选中</div>
+  <div class="box"><canvas id="c2" width="81" height="81"></canvas>蓄水池 未选中</div>
+  <div class="box"><canvas id="c3" width="81" height="81"></canvas>蓄水池 选中</div>
+  <div class="box"><canvas id="c4" width="81" height="81"></canvas>看板 未选中</div>
+  <div class="box"><canvas id="c5" width="81" height="81"></canvas>看板 选中</div>
+</div>
+<button onclick="saveAll()">一键下载全部图标</button>
+<p class="tip">下载后把 6 个 png 文件放到项目的 images/tabbar/ 目录下</p>
+
+<script>
+const S = 81, CX = 40.5, CY = 40.5;
+const dim = '#6A8060', active = '#8BB381';
+
+function drawIcon(id, fn) {
+  const c = document.getElementById(id);
+  const x = c.getContext('2d');
+  x.clearRect(0, 0, S, S);
+  fn(x);
+}
+
+// ── 今日流：闪电 ⚡ ──
+function bolt(ctx, color) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(44, 8); ctx.lineTo(28, 40); ctx.lineTo(38, 40);
+  ctx.lineTo(34, 73); ctx.lineTo(54, 36); ctx.lineTo(43, 36);
+  ctx.closePath(); ctx.fill();
+}
+
+// ── 蓄水池：水滴 ──
+function drop(ctx, color) {
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(CX, 14);
+  ctx.bezierCurveTo(22, 42, 22, 58, CX, 68);
+  ctx.bezierCurveTo(60, 58, 60, 42, CX, 14);
+  ctx.closePath(); ctx.fill();
+}
+
+// ── 看板：柱状图 ──
+function chart(ctx, color) {
+  ctx.fillStyle = color;
+  const bars = [{x:18,h:28},{x:33,h:44},{x:48,h:20}];
+  bars.forEach(b => {
+    const y = S - 16 - b.h;
+    ctx.beginPath();
+    ctx.roundRect(b.x, y, 14, b.h, 4);
+    ctx.fill();
+  });
+  // baseline
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(14, S - 14); ctx.lineTo(S - 14, S - 14);
+  ctx.stroke();
+}
+
+// draw all
+drawIcon('c0', ctx => bolt(ctx, dim));
+drawIcon('c1', ctx => bolt(ctx, active));
+drawIcon('c2', ctx => drop(ctx, dim));
+drawIcon('c3', ctx => drop(ctx, active));
+drawIcon('c4', ctx => chart(ctx, dim));
+drawIcon('c5', ctx => chart(ctx, active));
+
+// ── PNG encoder (纯 JS，无依赖) ──
+function crc32(buf) {
+  let c = 0xFFFFFFFF;
+  for (let i = 0; i < buf.length; i++) {
+    c ^= buf[i];
+    for (let j = 0; j < 8; j++) c = (c >>> 1) ^ (c & 1 ? 0xEDB88320 : 0);
+  }
+  return (c ^ 0xFFFFFFFF) >>> 0;
+}
+
+function makeChunk(type, data) {
+  const len = new DataView(new ArrayBuffer(4));
+  len.setUint32(0, data.length);
+  const t = [type.charCodeAt(0), type.charCodeAt(1), type.charCodeAt(2), type.charCodeAt(3)];
+  const body = new Uint8Array([...t, ...data]);
+  const crc = new DataView(new ArrayBuffer(4));
+  crc.setUint32(0, crc32(body));
+  return new Uint8Array([...new Uint8Array(len.buffer), ...body, ...new Uint8Array(crc.buffer)]);
+}
+
+function adler32(data) {
+  let a = 1, b = 0;
+  for (let i = 0; i < data.length; i++) { a = (a + data[i]) % 65521; b = (b + a) % 65521; }
+  return ((b << 16) | a) >>> 0;
+}
+
+function deflateUncompressed(raw) {
+  const blocks = [];
+  const BSIZE = 65535;
+  for (let i = 0; i < raw.length; i += BSIZE) {
+    const end = Math.min(i + BSIZE, raw.length);
+    const chunk = raw.slice(i, end);
+    const last = end === raw.length ? 1 : 0;
+    blocks.push(last);
+    const len = chunk.length;
+    blocks.push(len & 0xFF, (len >> 8) & 0xFF, (~len) & 0xFF, ((~len) >> 8) & 0xFF);
+    for (let j = 0; j < chunk.length; j++) blocks.push(chunk[j]);
+  }
+  // zlib header
+  const cmf = 0x78, flg = 0x01;
+  const zlibBody = new Uint8Array([cmf, flg, ...blocks]);
+  const adler = adler32(raw);
+  const result = new Uint8Array(zlibBody.length + 4);
+  result.set(zlibBody);
+  const dv = new DataView(result.buffer);
+  dv.setUint32(zlibBody.length, adler);
+  return result;
+}
+
+function canvasToPNG(canvas) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const img = ctx.getImageData(0, 0, w, h).data;
+
+  // raw image data: filter byte + RGBX per row
+  const raw = new Uint8Array(h * (1 + w * 4));
+  for (let y = 0; y < h; y++) {
+    raw[y * (1 + w * 4)] = 0; // no filter
+    for (let x = 0; x < w; x++) {
+      const si = (y * w + x) * 4;
+      const di = y * (1 + w * 4) + 1 + x * 4;
+      raw[di] = img[si];       // R
+      raw[di+1] = img[si+1];   // G
+      raw[di+2] = img[si+2];   // B
+      raw[di+3] = img[si+3];   // A
+    }
+  }
+
+  const sig = new Uint8Array([137,80,78,71,13,10,26,10]);
+  const ihdr = new Uint8Array(13);
+  const ihdrV = new DataView(ihdr.buffer);
+  ihdrV.setUint32(0, w);
+  ihdrV.setUint32(4, h);
+  ihdr[8] = 8; // bit depth
+  ihdr[9] = 6; // RGBA
+  ihdr[10] = 0; ihdr[11] = 0; ihdr[12] = 0;
+
+  const idat = deflateUncompressed(raw);
+  const iend = new Uint8Array(0);
+
+  const chunks = [makeChunk('IHDR', ihdr), makeChunk('IDAT', idat), makeChunk('IEND', iend)];
+  const totalLen = sig.length + chunks.reduce((s, c) => s + c.length, 0);
+  const png = new Uint8Array(totalLen);
+  let off = 0;
+  png.set(sig, off); off += sig.length;
+  chunks.forEach(c => { png.set(c, off); off += c.length; });
+  return new Blob([png], { type: 'image/png' });
+}
+
+function download(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function saveAll() {
+  const names = [
+    'index.png', 'index-selected.png',
+    'pool.png', 'pool-selected.png',
+    'board.png', 'board-selected.png'
+  ];
+  for (let i = 0; i < 6; i++) {
+    const blob = canvasToPNG(document.getElementById('c' + i));
+    setTimeout(() => download(blob, names[i]), i * 200);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<view class="board-page">
+
+<!-- 数据统计 -->
+<view class="stats-row">
+  <view class="stat-card">
+    <text class="stat-num">{{todayDone}}</text>
+    <text class="stat-label">今日脉冲</text>
+  </view>
+  <view class="stat-card">
+    <text class="stat-num">{{totalIdeas}}</text>
+    <text class="stat-label">灵感总数</text>
+  </view>
+  <view class="stat-card">
+    <text class="stat-num">{{convertedCount}}</text>
+    <text class="stat-label">已转化</text>
+  </view>
+</view>
+
+<!-- 热力周历 -->
+<view class="heatmap-section">
+  <text class="sec-label">最近7天</text>
+  <view class="heatmap-row">
+    <view
+      wx:for="{{weekData}}"
+      wx:key="date"
+      class="heat-cell"
+      style="background:{{item.color}}"
+    >
+      <text class="heat-day">{{item.day}}</text>
+      <text class="heat-count">{{item.count}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 高频标签 -->
+<view class="tags-section">
+  <text class="sec-label">活跃主题</text>
+  <view class="tags-cloud">
+    <view
+      wx:for="{{topTags}}"
+      wx:key="tag"
+      class="tag-item"
+      style="font-size:{{item.size}}rpx;opacity:{{item.opacity}}"
+    >{{item.tag}}</view>
+  </view>
+</view>
+
+<!-- 最近完成 -->
+<view class="done-section">
+  <text class="sec-label">最近完成</text>
+  <view wx:if="{{doneTasks.length > 0}}">
+    <view
+      wx:for="{{doneTasks}}"
+      wx:key="_id"
+      class="done-item"
+    >
+      <view class="done-dot"><text class="done-dot-in">✓</text></view>
+      <view class="done-body">
+        <text class="done-content">{{item.content}}</text>
+        <text class="done-time">{{item.timeLabel}}</text>
+      </view>
+    </view>
+  </view>
+  <view wx:else class="empty-done">
+    <text class="empty-text">完成任务后会在这里留下记录</text>
+  </view>
+</view>
+
+</view>

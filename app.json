@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/pool/pool",
+    "pages/board/board",
+    "pages/detail/detail",
+    "pages/profile/profile"
+  ],
+  "tabBar": {
+    "color": "#4A6838",
+    "selectedColor": "#9BBA82",
+    "backgroundColor": "#1A2618",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "今日流"
+      },
+      {
+        "pagePath": "pages/pool/pool",
+        "text": "蓄水池"
+      },
+      {
+        "pagePath": "pages/board/board",
+        "text": "看板"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1A2618",
+    "navigationBarTitleText": "灵感脉冲",
+    "navigationBarTextStyle": "white"
+  },
+  "cloud": true,
+  "sitemapLocation": "sitemap.json"
+}

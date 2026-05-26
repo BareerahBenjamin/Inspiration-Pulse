@@ -1,0 +1,66 @@
+<view class="index-page">
+
+<view class="header">
+  <view class="header-top">
+    <view>
+      <text class="eyebrow">mission board</text>
+      <text class="page-title">今日流</text>
+    </view>
+    <view class="lv-chip">
+      <text class="lv-num">{{todayDone}}</text>
+      <text class="lv-txt">PULSE</text>
+    </view>
+  </view>
+  <view class="prog-row">
+    <view class="prog-track">
+      <view class="prog-fill" style="{{progressStyle}}"></view>
+    </view>
+    <text class="prog-txt">{{todayDone}}/5</text>
+  </view>
+</view>
+
+<view class="energy-section">
+  <view class="energy-row">
+    <view
+      wx:for="{{energyLevels}}"
+      wx:key="value"
+      class="en-btn {{currentEnergy === item.value ? 'active' : ''}}"
+      bindtap="onEnergySelect"
+      data-value="{{item.value}}"
+    >
+      <text class="en-icon">{{item.icon}}</text>
+      <text class="en-label">{{item.label}}</text>
+    </view>
+  </view>
+</view>
+
+<text class="sec-label">{{energyLevels[currentEnergy - 1].label}} · {{filteredTasks.length}} 个任务</text>
+
+<view class="task-list" wx:if="{{filteredTasks.length > 0}}">
+  <view
+    wx:for="{{filteredTasks}}"
+    wx:key="_id"
+    class="task-card {{index === 0 ? 'active' : ''}} {{item.status === 'done' ? 'done' : ''}}"
+  >
+    <text class="task-num">0{{index + 1}}</text>
+    <view class="task-body" bindtap="onTaskTap" data-id="{{item.ideaId}}">
+      <text class="task-content">{{item.content}}</text>
+      <view class="task-meta">
+        <text class="task-deadline {{item.deadlineUrgent ? 'urgent' : ''}}" wx:if="{{item.deadlineLabel}}">{{item.deadlineLabel}}</text>
+      </view>
+      <view class="task-btns">
+        <view class="task-btn" catchtap="onAIBreakdown" data-id="{{item._id}}" data-content="{{item.content}}">AI 拆解</view>
+        <view class="task-btn go" catchtap="onTaskDone" data-id="{{item._id}}">完成</view>
+        <view class="task-skip" catchtap="onTaskSkip" data-id="{{item._id}}">跳过</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="empty-task" wx:else>
+  <text class="empty-icon">⚡</text>
+  <text class="empty-text">今日流是空的\n去蓄水池转化一个灵感吧</text>
+  <view class="go-pool-btn" bindtap="goPool">去蓄水池</view>
+</view>
+
+</view>

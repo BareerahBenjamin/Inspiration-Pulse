@@ -1,0 +1,111 @@
+<view class="pool-page">
+
+<!-- 顶部快捷录入区 -->
+<view class="input-section">
+  <view class="input-bar">
+    <textarea
+      class="idea-input"
+      placeholder="一个灵感，一句话就够..."
+      value="{{inputText}}"
+      bindinput="onInput"
+      maxlength="200"
+      auto-height
+      confirm-type="done"
+    />
+    <view class="input-actions">
+      <view class="action-btn {{isRecording ? 'recording' : ''}}" bindtap="onVoiceToggle">
+        <text class="iconfont">{{isRecording ? '⏹' : '🎙'}}</text>
+      </view>
+      <view class="action-btn primary {{inputText ? '' : 'disabled'}}" bindtap="onSubmit">
+        <text>存入</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快捷标签选择 -->
+  <scroll-view class="tag-scroll" scroll-x>
+    <view class="tag-row">
+      <view
+        wx:for="{{quickTags}}"
+        wx:key="index"
+        class="quick-tag {{selectedTag === item ? 'active' : ''}}"
+        bindtap="onTagSelect"
+        data-tag="{{item}}"
+      >{{item}}</view>
+    </view>
+  </scroll-view>
+</view>
+
+<!-- 筛选栏 -->
+<view class="filter-bar">
+  <view class="filter-left">
+    <text class="pool-count">{{ideas.length}} 个灵感</text>
+  </view>
+  <view class="filter-right">
+    <view
+      wx:for="{{filterOptions}}"
+      wx:key="value"
+      class="filter-chip {{currentFilter === item.value ? 'active' : ''}}"
+      bindtap="onFilter"
+      data-value="{{item.value}}"
+    >{{item.label}}</view>
+  </view>
+</view>
+
+<!-- 灵感卡片列表 -->
+<view class="ideas-list" wx:if="{{filteredIdeas.length > 0}}">
+  <view
+    wx:for="{{filteredIdeas}}"
+    wx:key="_id"
+    class="idea-card {{item.converted ? 'converted' : ''}}"
+    bindtap="onCardTap"
+    data-id="{{item._id}}"
+  >
+    <!-- 卡片头部 -->
+    <view class="card-header">
+      <view class="card-tag-wrap">
+        <text class="card-tag" wx:if="{{item.tag}}">{{item.tag}}</text>
+        <text class="card-ai-tag" wx:if="{{item.aiTag}}">{{item.aiTag}}</text>
+        <text class="card-deadline {{item.deadlineUrgent ? 'urgent' : ''}}" wx:if="{{item.deadlineLabel}}">{{item.deadlineLabel}}</text>
+      </view>
+      <view class="card-menu" catchtap="onCardMenu" data-id="{{item._id}}">···</view>
+    </view>
+
+    <!-- 灵感内容 -->
+    <text class="card-content">{{item.content}}</text>
+
+    <!-- 卡片底部 -->
+    <view class="card-footer">
+      <text class="card-time">{{item.timeLabel}}</text>
+      <view class="card-actions">
+        <view
+          class="card-btn"
+          catchtap="onAIBreakdown"
+          data-id="{{item._id}}"
+          data-content="{{item.content}}"
+        >AI拆解</view>
+        <view
+          class="card-btn {{item.converted ? 'done' : ''}}"
+          catchtap="onConvert"
+          data-id="{{item._id}}"
+        >{{item.converted ? '已转化' : '转为任务'}}</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 空状态 -->
+<view class="empty-state" wx:else>
+  <text class="empty-icon">💧</text>
+  <text class="empty-text">蓄水池还是空的\n随时倒入你的第一个灵感</text>
+</view>
+
+<!-- 操作菜单弹窗 -->
+<view class="menu-mask" wx:if="{{menuVisible}}" bindtap="closeMenu">
+  <view class="menu-sheet" catchtap="">
+    <view class="menu-item" bindtap="onDelete">删除这条灵感</view>
+    <view class="menu-item cancel" bindtap="closeMenu">取消</view>
+  </view>
+</view>
+
+</view>

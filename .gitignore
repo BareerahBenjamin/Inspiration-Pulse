@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# WeChat Developer Tools
+miniprogram_npm/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environment / secrets
+*.env
+.env.*
+
+# Build output
+dist/
+
+# Cloud function local dependencies
+cloudfunctions/*/node_modules/
+cloudfunctions/*/package-lock.json

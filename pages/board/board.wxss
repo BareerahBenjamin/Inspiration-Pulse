@@ -1,0 +1,168 @@
+.board-page {
+  min-height: 100vh;
+  background: linear-gradient(170deg, #1A2B22 0%, #1E3128 35%, #223829 70%, #1A2B22 100%);
+  background-attachment: fixed;
+  padding-bottom: 120rpx;
+}
+
+/* ── 统计卡片 ── */
+.stats-row {
+  display: flex;
+  gap: 14rpx;
+  padding: 40rpx 32rpx 16rpx;
+}
+
+.stat-card {
+  flex: 1;
+  background: rgba(36, 56, 42, 0.65);
+  border: 1rpx solid rgba(139, 179, 129, 0.06);
+  border-radius: 20rpx;
+  padding: 28rpx 0;
+  text-align: center;
+}
+
+.stat-num {
+  font-size: 56rpx;
+  font-weight: 800;
+  color: #8BB381;
+  display: block;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #6A8060;
+  display: block;
+  margin-top: 10rpx;
+  letter-spacing: 2rpx;
+}
+
+/* ── section label ── */
+.sec-label {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #6A8060;
+  letter-spacing: 6rpx;
+  text-transform: uppercase;
+  padding: 36rpx 32rpx 20rpx;
+  display: block;
+}
+
+/* ── 热力图 ── */
+.heatmap-section {
+  padding: 0 28rpx 20rpx;
+}
+
+.heatmap-row {
+  display: flex;
+  gap: 10rpx;
+}
+
+.heat-cell {
+  flex: 1;
+  border-radius: 14rpx;
+  padding: 20rpx 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8rpx;
+  background: rgba(36, 56, 42, 0.4);
+  border: 1rpx solid rgba(139, 179, 129, 0.04);
+}
+
+.heat-day {
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #6A8060;
+}
+
+.heat-count {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: #9AAF8E;
+}
+
+/* ── 标签云 ── */
+.tags-section {
+  padding: 0 28rpx 20rpx;
+}
+
+.tags-cloud {
+  background: rgba(36, 56, 42, 0.5);
+  border: 1rpx solid rgba(139, 179, 129, 0.06);
+  border-radius: 20rpx;
+  padding: 28rpx;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+  align-items: center;
+}
+
+.tag-item {
+  color: #8BB381;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+
+/* ── 完成列表 ── */
+.done-section {
+  padding: 0 28rpx;
+}
+
+.done-item {
+  display: flex;
+  gap: 18rpx;
+  align-items: flex-start;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid rgba(139, 179, 129, 0.04);
+}
+
+.done-dot {
+  width: 28rpx;
+  height: 28rpx;
+  border-radius: 50%;
+  background: #5A8A4E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 4rpx;
+}
+
+.done-dot-in {
+  font-size: 16rpx;
+  color: #FFF;
+  line-height: 1;
+  font-weight: 600;
+}
+
+.done-body {
+  flex: 1;
+}
+
+.done-content {
+  font-size: 30rpx;
+  color: #E8EDE5;
+  display: block;
+  line-height: 1.5;
+  margin-bottom: 6rpx;
+  font-weight: 500;
+}
+
+.done-time {
+  font-size: 24rpx;
+  color: #6A8060;
+  font-weight: 500;
+}
+
+.empty-done {
+  padding: 48rpx 0;
+  text-align: center;
+}
+
+.empty-text {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #9AAF8E;
+}

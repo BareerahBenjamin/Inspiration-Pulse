@@ -1,0 +1,92 @@
+<view class="detail-page">
+
+<!-- 灵感内容 -->
+<view class="idea-section">
+  <view class="idea-tag-row">
+    <text class="tag amber" wx:if="{{idea.tag}}">{{idea.tag}}</text>
+    <text class="tag green" wx:if="{{idea.aiTag}}">{{idea.aiTag}}</text>
+  </view>
+  <textarea
+    class="idea-textarea"
+    value="{{idea.content}}"
+    bindinput="onContentEdit"
+    placeholder="记录你的灵感..."
+    auto-height
+  />
+  <text class="idea-time">{{idea.timeLabel}}</text>
+
+  <!-- 截止日期 -->
+  <view class="deadline-row">
+    <text class="deadline-icon">📅</text>
+    <picker mode="date" value="{{idea.deadline || ''}}" start="{{today}}" end="2030-12-31" bindchange="onDeadlineChange">
+      <text class="deadline-label" wx:if="{{idea.deadline}}">{{idea.deadline}}</text>
+      <text class="deadline-placeholder" wx:else>设置截止日期</text>
+    </picker>
+    <view class="deadline-clear" wx:if="{{idea.deadline}}" catchtap="onDeadlineClear">✕</view>
+  </view>
+</view>
+
+<!-- AI 步骤拆解 -->
+<view class="steps-section">
+  <view class="steps-header">
+    <text class="steps-title">AI 拆解步骤</text>
+    <view class="gran-row">
+      <view
+        wx:for="{{granularities}}"
+        wx:key="value"
+        class="gran-btn {{currentGran === item.value ? 'active' : ''}}"
+        bindtap="onGranSelect"
+        data-value="{{item.value}}"
+      >{{item.label}}</view>
+    </view>
+  </view>
+
+  <!-- 步骤列表 -->
+  <view class="steps-list" wx:if="{{steps.length > 0 && !isLoading}}">
+    <view
+      wx:for="{{steps}}"
+      wx:key="index"
+      class="step-item {{item.done ? 'done' : ''}}"
+      bindtap="onStepToggle"
+      data-index="{{index}}"
+    >
+      <view class="step-line-wrap">
+        <view class="step-dot {{item.done ? 'done' : ''}}">
+          <text>{{item.done ? '✓' : index + 1}}</text>
+        </view>
+        <view class="step-connector" wx:if="{{index < steps.length - 1}}"></view>
+      </view>
+      <text class="step-text">{{item.text}}</text>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading-state" wx:elif="{{isLoading}}">
+    <view class="loading-dots">
+      <view class="dot"></view>
+      <view class="dot"></view>
+      <view class="dot"></view>
+    </view>
+    <text class="loading-text">AI 正在拆解...</text>
+  </view>
+
+  <!-- 未拆解状态 -->
+  <view class="no-steps" wx:else>
+    <text class="no-steps-text">让 AI 帮你拆解这个灵感的执行步骤</text>
+  </view>
+
+  <!-- 生成按钮 -->
+  <view class="breakdown-btn {{isLoading ? 'disabled' : ''}}" bindtap="onBreakdown">
+    {{steps.length > 0 ? '重新生成' : '开始拆解'}}
+  </view>
+</view>
+
+<!-- 底部操作 -->
+<view class="bottom-bar">
+  <view class="save-btn" bindtap="onSave">保存修改</view>
+  <view class="convert-btn {{idea.converted ? 'done' : ''}}" bindtap="onConvert">
+    {{idea.converted ? '已转化为任务' : '转为任务'}}
+  </view>
+</view>
+
+</view>
